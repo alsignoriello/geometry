@@ -1,6 +1,6 @@
 # Geometry
 
-Random geometry methods
+Geometry methods used in polygon and polyhedra simulations
 
 
 
