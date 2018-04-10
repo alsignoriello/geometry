@@ -2,7 +2,10 @@
 import sys
 import numpy as np 
 from numpy import sin,cos,sqrt,pi
+from numpy.random import seed
 
+# random seed
+seed(1292405)
 
 # Number of vertices
 Nv = int(sys.argv[1])

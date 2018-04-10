@@ -3,6 +3,8 @@ import sys
 import numpy as np
 from numpy import sqrt
 
+# compute perimeter for vertices
+# vertices = (N,2) with (x,y)
 def get_perim(vertices):
 	p = 0
 	N = vertices.shape[0]

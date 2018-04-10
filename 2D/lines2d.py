@@ -10,6 +10,7 @@ def lineofbestfit(x,y):
 	
 	slope=par[0][0]
 	intercept=par[0][1]
+	# plot the lines
 	# xl = [min(x), max(x)]
 	# yl = [slope*xx + intercept for xx in xl]
 	
