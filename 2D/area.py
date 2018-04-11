@@ -14,7 +14,9 @@ def get_area(vertices):
 		else:
 			x2,y2 = vertices[0,:]
 		cross += ((x1*y2) - (x2*y1))
-	return 0.5*cross
+	# area should be positive
+	# can be negative if vertices clockwise
+	return abs(0.5*cross)
 
 
 
