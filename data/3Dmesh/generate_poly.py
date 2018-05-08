@@ -4,7 +4,6 @@ import numpy as np
 from numpy.random import seed
 from numpy import pi, sin , cos
 from scipy.spatial import Delaunay
-from circumradius3d import get_circumradius
 import operator
 
 # random seed
@@ -19,15 +18,20 @@ r = float(sys.argv[2])
 # allocate vertices
 coords = np.zeros((Nv,3))
 
+# move to center
+cx = 10
+cy = 10
+cz = 10
+
 # pick random points on sphere
 for i in range(0,Nv):
 
 	theta = np.random.uniform(0,2*pi)
 	phi = np.random.uniform(0,pi)
 
-	x = r * cos(theta) * sin(phi)
-	y = r * sin(theta) * sin(phi)
-	z = r * cos(phi)
+	x = cx + r * cos(theta) * sin(phi)
+	y = cy + r * sin(theta) * sin(phi)
+	z = cz + r * cos(phi)
 
 	coords[i,:] = x,y,z
 
@@ -105,6 +109,10 @@ f = open("triangles.txt","w")
 ff = open("faces.txt","w")
 vcount = 0
 dists = []
+A = np.zeros(3)
+B = np.zeros(3)
+C = np.zeros(3)
+CC = np.array([cx,cy,cz])
 for key,value in counts.iteritems():
 	if value == 1:
 		Ax = x[key[0]]
@@ -136,7 +144,17 @@ for key,value in counts.iteritems():
 			i3 = vcount
 			vertices[(Cx,Cy,Cz)] = i3
 			vcount += 1
-		ff.write("%d\t%d\t%d\n"%(i1,i2,i3))
+
+		# check vertex order
+		A[:] = Ax,Ay,Az
+		B[:] = Bx,By,Bz
+		C[:] = Cx,Cy,Cz
+		N = np.cross((B - A),(C - A))
+		w = np.dot(N,A-CC)
+		if w < 0:
+			ff.write("%d\t%d\t%d\n"%(i1,i2,i3))
+		else:
+			ff.write("%d\t%d\t%d\n"%(i3,i2,i1))
 
 f.close()
 ff.close()
