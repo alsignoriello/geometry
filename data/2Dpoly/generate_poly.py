@@ -22,7 +22,7 @@ vertices = np.zeros((Nv,2))
 
 for i in range(0,Nv):
 
-	# pick vertices at random intervals
+	# pick vertices at random intervals on circle
 	lb = i * 2 * pi / Nv
 	ub = (i+1) * 2 * pi / Nv
 	theta = np.random.uniform(lb,ub)
