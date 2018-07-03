@@ -10,34 +10,47 @@ import operator
 seed(1292405)
 
 # number of vertices
-Nv = int(sys.argv[1])
+# Nv = int(sys.argv[1])
+N = 10
 
 # radius of polygon
-r = float(sys.argv[2])
+r = float(sys.argv[1])
 
 # allocate vertices
-coords = np.zeros((Nv,3))
+coords = []
 
 # move to center
 cx = 10
 cy = 10
 cz = 10
 
+
 # pick random points on sphere
-for i in range(0,Nv):
+for i in range(0,N):
+	theta = (i * 2 * pi)/N
+	for j in range(0,N+1):
+		phi = (j*pi)/N
+		print theta, phi
 
-	theta = np.random.uniform(0,2*pi)
-	phi = np.random.uniform(0,pi)
+	# theta = np.random.uniform(0,2*pi)
+	# phi = np.random.uniform(0,pi)
 
-	x = cx + r * cos(theta) * sin(phi)
-	y = cy + r * sin(theta) * sin(phi)
-	z = cz + r * cos(phi)
+		x = cx + r * cos(theta) * sin(phi)
+		y = cy + r * sin(theta) * sin(phi)
+		z = cz + r * cos(phi)
+		# print x,y,z
+		
+		if (x,y,z) not in coords:
+			coords.append((x,y,z))
 
-	coords[i,:] = x,y,z
+print len(coords)
+coords = np.array(coords)
 
 x = coords[:,0]
 y = coords[:,1]
 z = coords[:,2]
+
+
 
 # triangulate
 tt = Delaunay(coords)
@@ -151,6 +164,7 @@ for key,value in counts.iteritems():
 		C[:] = Cx,Cy,Cz
 		N = np.cross((B - A),(C - A))
 		w = np.dot(N,A-CC)
+		
 		if w < 0:
 			ff.write("%d\t%d\t%d\n"%(i1,i2,i3))
 		else:
