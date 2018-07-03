@@ -43,74 +43,35 @@ for i in range(0,N):
 		if (x,y,z) not in coords:
 			coords.append((x,y,z))
 
-print len(coords)
 coords = np.array(coords)
-
 x = coords[:,0]
 y = coords[:,1]
 z = coords[:,2]
 
-
-
 # triangulate
 tt = Delaunay(coords)
-
-# remove triangles that are too big
 ntetrahedrons = len(tt.simplices)
 triangles = []
 
-# add triangles with radius < maxCR
 for i in range(0,ntetrahedrons):
-	Ax = x[tt.simplices[i,0]]
-	Ay = y[tt.simplices[i,0]]         
-	Az = z[tt.simplices[i,0]]
-	Bx = x[tt.simplices[i,1]]
-	By = y[tt.simplices[i,1]]
-	Bz = z[tt.simplices[i,1]]
-	Cx = x[tt.simplices[i,2]]
-	Cy = y[tt.simplices[i,2]]
-	Cz = z[tt.simplices[i,2]]
-	Dx = x[tt.simplices[i,3]]
-	Dy = y[tt.simplices[i,3]]
-	Dz = z[tt.simplices[i,3]]
-
-	# Triangle 1 = ABC = [0,1,2]
 	i1 = tt.simplices[i,0]
 	i2 = tt.simplices[i,1]
 	i3 = tt.simplices[i,2]
+	i4 = tt.simplices[i,3]
 	triangles.append((i1,i2,i3))
-
-	# Triangle 2 = ABD  = [0,1,3]
-	i1 = tt.simplices[i,0]
-	i2 = tt.simplices[i,1]
-	i3 = tt.simplices[i,3]
-	triangles.append((i1,i2,i3))
-
-	# Triangle 3 = ACD = [0,2,3]
-	i1 = tt.simplices[i,0]
-	i2 = tt.simplices[i,2]
-	i3 = tt.simplices[i,3]
-	triangles.append((i1,i2,i3))
-
-	# Triangle 4 = BCD = [1,2,3]
-	i1 = tt.simplices[i,1]
-	i2 = tt.simplices[i,2]
-	i3 = tt.simplices[i,3]
-	triangles.append((i1,i2,i3))
-
+	triangles.append((i2,i3,i4))
+	triangles.append((i1,i3,i4))
+	triangles.append((i1,i2,i4))
 
 
 # get all triangles on the surface 
-
-# find all triangles involved in one tetrahedron
-# i.e. find all unique triangles 
+# i.e. find all triangles involved in one tetrahedron
 counts = {}
 for i1,i2,i3 in triangles:
 
 	# order 3 min -> max
 	i_sort = np.sort([i1,i2,i3])
 	tri = (i_sort[0],i_sort[1],i_sort[2])
-
 
 	if tri in counts:
 		counts[tri] += 1
@@ -128,6 +89,9 @@ C = np.zeros(3)
 CC = np.array([cx,cy,cz])
 for key,value in counts.iteritems():
 	if value == 1:
+		i1 = key[0]
+		i2 = key[1]
+		i3 = key[2]
 		Ax = x[key[0]]
 		Ay = y[key[0]]
 		Az = z[key[0]]
@@ -169,7 +133,6 @@ for key,value in counts.iteritems():
 			ff.write("%d\t%d\t%d\n"%(i1,i2,i3))
 		else:
 			ff.write("%d\t%d\t%d\n"%(i3,i2,i1))
-
 f.close()
 ff.close()
 
