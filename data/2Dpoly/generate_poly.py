@@ -28,7 +28,7 @@ for i in range(0,Nv):
 	theta = np.random.uniform(lb,ub)
 
 	# pick vertices evenly spaced
-	# theta = (i * 2 * pi)/Nv
+	theta = (i * 2 * pi)/Nv
 
 	x = cx + r*cos(theta)/(sqrt(cos(theta)**2 + sin(theta)**2))
 	y = cy + r*sin(theta)/(sqrt(cos(theta)**2 + sin(theta)**2))
